@@ -2,18 +2,17 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# System deps
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Python deps
-COPY requirements.txt .
+# Fix: copy from backend/ subdirectory since build context is repo root
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# App source
-COPY . .
+# Copy backend app code
+COPY backend/ .
 
 # Create data directory for FAISS index
 RUN mkdir -p /app/data/faiss_index
