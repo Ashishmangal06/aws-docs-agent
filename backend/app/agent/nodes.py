@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 def _get_llm(streaming: bool = False) -> ChatBedrock:
     session = boto3.Session(
         region_name=settings.aws_region,
-        profile_name=settings.aws_profile,
+        # profile_name=settings.aws_profile,
     )
     return ChatBedrock(
         client=session.client("bedrock-runtime"),

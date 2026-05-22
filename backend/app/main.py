@@ -26,7 +26,7 @@ async def lifespan(app: FastAPI):
         from backend.app.agent.nodes import _get_retriever
         _get_retriever()
         logger.info("FAISS index loaded and ready.")
-    except FileNotFoundError:
+    except Exception as e:
         logger.warning(
             "FAISS index not found. Run `make ingest` before serving. "
             "Live-fetch fallback will be used for all queries."
