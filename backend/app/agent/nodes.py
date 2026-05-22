@@ -22,12 +22,12 @@ logger = logging.getLogger(__name__)
 # --------------------------------------------------------------------------- #
 
 def _get_llm(streaming: bool = False) -> ChatBedrock:
-    session = boto3.Session(
-        region_name=settings.aws_region,
-        # profile_name=settings.aws_profile,
+    bedrock_client = boto3.client(
+        "bedrock-runtime",
+        region_name="us-east-1",  # hardcoded
     )
     return ChatBedrock(
-        client=session.client("bedrock-runtime"),
+        client=bedrock_client,
         model_id=settings.bedrock_model_id,
         streaming=streaming,
         model_kwargs={"temperature": 0.2, "max_tokens": 2048},
