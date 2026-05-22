@@ -1,0 +1,14 @@
+version: 1.0
+runtime: python311
+build:
+  commands:
+    build:
+      - pip install -r frontend/requirements.txt
+run:
+  runtime-version: 3.11
+  command: streamlit run frontend/app.py --server.port=8080 --server.address=0.0.0.0 --server.headless=true --browser.gatherUsageStats=false
+  network:
+    port: 8080
+  env:
+    - name: BACKEND_URL
+      value: "http://AwsDoc-Agent-5lOMiI15WRkQ-857474219.us-east-1.elb.amazonaws.com"
