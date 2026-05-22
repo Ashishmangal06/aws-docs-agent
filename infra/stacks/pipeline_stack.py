@@ -101,6 +101,7 @@ class PipelineStack(Stack):
             removal_policy=cdk.RemovalPolicy.DESTROY,
             auto_delete_images=True,
         )
+        self.frontend_ecr_repo.grant_pull_push(build_role)
 
         # Frontend CodeBuild project
         self.frontend_build_project = codebuild.Project(
