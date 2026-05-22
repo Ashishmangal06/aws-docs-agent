@@ -41,7 +41,7 @@ SAMPLE_QUESTIONS = [
     "What is the maximum size of an RDS PostgreSQL instance?",
 ]
 
-def extract_service_from_url(url: str) -> str:
+def _extract_service_from_url(url: str) -> str:
     """Extracts a readable service name from an AWS docs URL."""
     mapping = {
         "AmazonS3": "Amazon S3",
@@ -241,7 +241,7 @@ with chat_container:
                         expanded=False
                     ):
                         for url in msg["citations"]:
-                            service = extract_service_from_url(url)
+                            service = _extract_service_from_url(url)
                             st.markdown(
                                 f"🔗 **{service}** — [{url}]({url})",
                                 unsafe_allow_html=True
@@ -309,7 +309,7 @@ if user_input:
                     expanded=False
                 ):
                     for url in citations_data:
-                        service = extract_service_from_url(url)
+                        service = _extract_service_from_url(url)
                         st.markdown(f"🔗 **{service}** — [{url}]({url})")
  
         except httpx.ConnectError:
