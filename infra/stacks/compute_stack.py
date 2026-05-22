@@ -168,6 +168,9 @@ class ComputeStack(Stack):
                 "LOG_LEVEL": "INFO",
                 "VECTOR_STORE_PATH": "/app/data/faiss_index",
                 "CORS_ORIGINS": '["*"]',  # tighten in prod
+                "VECTOR_STORE_BUCKET": f"aws-docs-agent-vector-store-{self.account}-{self.region}",
+                "BEDROCK_MODEL_ID": "us.anthropic.claude-sonnet-4-20250514-v1:0",
+                "BEDROCK_EMBEDDINGS_MODEL_ID": "amazon.titan-embed-text-v2:0",
             },
             health_check=ecs.HealthCheck(
                 command=["CMD-SHELL", "curl -f http://localhost:8000/api/v1/health || exit 1"],
