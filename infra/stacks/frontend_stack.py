@@ -22,19 +22,17 @@ class FrontendStack(Stack):
         scope: Construct,
         construct_id: str,
         backend_url: str,
-        vpc: ec2.Vpc = None,
         **kwargs,
     ):
         super().__init__(scope, construct_id, **kwargs)
 
-        # Reuse VPC from compute stack if provided, else create minimal one
-        if vpc is None:
-            vpc = ec2.Vpc(
-                self,
-                "FrontendVpc",
-                max_azs=2,
-                nat_gateways=1,
-            )
+        # VPC
+        vpc = ec2.Vpc(
+            self,
+            "FrontendVpc",
+            max_azs=2,
+            nat_gateways=1,
+        )
 
         # ECS Cluster
         cluster = ecs.Cluster(
@@ -44,13 +42,11 @@ class FrontendStack(Stack):
             cluster_name="aws-docs-agent-frontend-cluster",
         )
 
-        # ECR Repo for frontend image
-        ecr_repo = ecr.Repository(
+        # Reference EXISTING ECR repo — don't create a new one
+        ecr_repo = ecr.Repository.from_repository_name(
             self,
             "FrontendRepo",
             repository_name="aws-docs-agent-frontend",
-            removal_policy=cdk.RemovalPolicy.DESTROY,
-            auto_delete_images=True,
         )
 
         # Log group
@@ -125,4 +121,3 @@ class FrontendStack(Stack):
         )
 
         self.frontend_url = f"http://{fargate_service.load_balancer.load_balancer_dns_name}"
-        self.ecr_repo = ecr_repo
